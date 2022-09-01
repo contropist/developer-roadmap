@@ -22,7 +22,7 @@
 
 ![](https://i.imgur.com/waxVImv.png)
 
-Roadmaps are being made interactive and have been moved to website.
+Roadmaps are being made interactive and have been moved to the website.
 
 ### [View all Roadmaps](https://roadmap.sh)
 
@@ -34,12 +34,16 @@ Here is the list of available roadmaps with more being actively worked upon.
 - [Backend Roadmap](https://roadmap.sh/backend)
 - [DevOps Roadmap](https://roadmap.sh/devops)
 - [React Roadmap](https://roadmap.sh/react)
+- [Vue Roadmap](https://roadmap.sh/vue)
 - [Angular Roadmap](https://roadmap.sh/angular)
 - [Android Roadmap](https://roadmap.sh/android)
+- [JavaScript Roadmap](https://roadmap.sh/javascript)
+- [Node.js Roadmap](https://roadmap.sh/nodejs)
 - [Python Roadmap](https://roadmap.sh/python)
 - [Go Roadmap](https://roadmap.sh/golang)
 - [Java Roadmap](https://roadmap.sh/java)
 - [DBA Roadmap](https://roadmap.sh/postgresql-dba)
+- [Blockchain Roadmap](https://roadmap.sh/blockchain)
 
 ![](https://i.imgur.com/waxVImv.png)
 

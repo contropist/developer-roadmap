@@ -14,9 +14,11 @@ export type RoadmapType = {
     name: string;
     url: string;
   };
+  type: "role" | "tool";
   featured: boolean;
   imageUrl?: string;
   jsonUrl?: string;
+  isNew?: boolean;
   landingPath?: string;
   resourcesPath: string;
   contentPathsFilePath?: string;
@@ -42,5 +44,5 @@ export function getFeaturedRoadmaps(): RoadmapType[] {
 }
 
 export function isInteractiveRoadmap(id: string): boolean {
-  return ['frontend', 'backend', 'devops'].includes(id);
+  return ['frontend', 'backend', 'devops', 'react', 'vue', 'python', 'java', 'blockchain', 'golang', 'javascript', 'nodejs', 'qa'].includes(id);
 }

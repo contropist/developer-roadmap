@@ -1,18 +1,17 @@
 import { useFetch } from 'use-http';
 import { useEffect, useRef, useState } from 'react';
 import { Box, Container } from '@chakra-ui/react';
+import { wireframeJSONToSVG } from 'roadmap-renderer';
 import { GlobalHeader } from '../../components/global-header';
 import { OpensourceBanner } from '../../components/opensource-banner';
-import { UpdatesBanner } from '../../components/updates-banner';
 import { Footer } from '../../components/footer';
 import { getAllRoadmaps, getRoadmapById, RoadmapType } from '../../lib/roadmap';
 import Helmet from '../../components/helmet';
-import { wireframeJSONToSVG } from '../../lib/renderer';
 import { RoadmapPageHeader } from '../../components/roadmap/roadmap-page-header';
 import { ContentDrawer } from '../../components/roadmap/content-drawer';
 import { RoadmapError } from '../../components/roadmap/roadmap-error';
 import { RoadmapLoader } from '../../components/roadmap/roadmap-loader';
-import { removeSortingInfo } from '../../lib/renderer/utils';
+import { removeSortingInfo } from '../../lib/renderer';
 
 type RoadmapProps = {
   roadmap: RoadmapType;
@@ -53,6 +52,11 @@ export function InteractiveRoadmapRenderer(props: RoadmapProps) {
     }
 
     function clickListener(event: MouseEvent) {
+      const viewPortMeta = document.querySelector('meta[name=viewport]');
+      if (viewPortMeta) {
+        viewPortMeta.setAttribute('content', "initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0");
+      }
+
       const targetGroup = (event?.target as HTMLElement)?.closest('g');
       const groupId = targetGroup?.dataset?.groupId;
       if (!targetGroup || !groupId) {
@@ -126,6 +130,34 @@ export function InteractiveRoadmapRenderer(props: RoadmapProps) {
     minHeight = ['870px', '1920px', '2505px', '2591px', '2591px', '2591px'];
   }
 
+  if (roadmap.id === 'vue') {
+    minHeight = ['600px', '820px', '1340px', '1680px', '1750px', '1750px'];
+  }
+
+  if (roadmap.id === 'react') {
+    minHeight = ['400px', '865px', '1065px', '1400px', '1400px', '1400px'];
+  }
+
+  if (roadmap.id === 'blockchain') {
+    minHeight = ['780px', '1120px', '1770px', '2235px', '2235px', '2235px'];
+  }
+
+  if (roadmap.id === 'golang') {
+    minHeight = ['590px', '1201px', '1201px', '1625px', '1625px', '1625px'];
+  }
+
+  if (roadmap.id === 'javascript') {
+    minHeight = ['892px', '1835px', '1835px', '2475px', '2475px', '2475px'];
+  }
+
+  if (roadmap.id === 'nodejs') {
+    minHeight = ['865px', '1855px', '1855px', '2500px', '2500px', '2500px'];
+  }
+
+  if (roadmap.id === 'qa') {
+    minHeight = ['865px', '1610px', '1610px', '2200px', '2200px', '2200px'];
+  }
+
   return (
     <Container maxW={'container.lg'} position="relative" minHeight={minHeight}>
       {(isLoading || isRendering) && <RoadmapLoader />}
@@ -157,7 +189,6 @@ export default function InteractiveRoadmap(props: RoadmapProps) {
       </Box>
 
       <OpensourceBanner />
-      <UpdatesBanner />
       <Footer />
     </Box>
   );
@@ -189,7 +220,6 @@ type ContextType = {
 
 export async function getStaticProps(context: ContextType) {
   const roadmapId: string = context?.params?.roadmap;
-
   return {
     props: {
       roadmap: getRoadmapById(roadmapId),

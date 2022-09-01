@@ -1,15 +1,6 @@
-import {
-  Box,
-  Container,
-  Heading,
-  Link,
-  SimpleGrid,
-  Text,
-  useMediaQuery,
-} from '@chakra-ui/react';
+import { Box, Container, Heading, SimpleGrid, Tag, Text } from '@chakra-ui/react';
 import { GlobalHeader } from '../components/global-header';
 import { Footer } from '../components/footer';
-import { UpdatesBanner } from '../components/updates-banner';
 import { OpensourceBanner } from '../components/opensource-banner';
 import { DimmedMore } from '../components/dimmed-more';
 import { LinksListItem } from '../components/links-list-item';
@@ -19,10 +10,9 @@ import { HomeRoadmapItem } from '../components/roadmap/home-roadmap-item';
 import { getFeaturedRoadmaps, RoadmapType } from '../lib/roadmap';
 import { getAllGuides, GuideType } from '../lib/guide';
 import { getAllVideos, VideoType } from '../lib/video';
-import siteConfig from '../content/site.json';
 import Helmet from '../components/helmet';
-import { event } from '../lib/gtag';
 import { PageWrapper } from '../components/page-wrapper';
+import { FeaturedRoadmapsList } from '../components/home/featured-roadmaps-list';
 
 type HomeProps = {
   roadmaps: RoadmapType[];
@@ -55,40 +45,17 @@ export default function Home(props: HomeProps) {
               educational content to help guide the developers in picking up the
               path and guide their learnings.
             </Text>
-
-            <Text fontSize={['14px', '14px', '16px']}>
-              We also have a{' '}
-              <Link
-                textDecoration={'underline'}
-                href={siteConfig.url.youtube}
-                onClick={() =>
-                  event({
-                    category: 'Subscription',
-                    action: 'Clicked the YouTube link',
-                    label: 'YouTube link on home',
-                  })
-                }
-                target="_blank"
-                fontWeight={600}
-              >
-                YouTube channel
-              </Link>{' '}
-              which we hope you are going to love.
-            </Text>
           </Box>
-          <SimpleGrid columns={[1, 2, 3]} spacing={['10px', '10px', '15px']}>
-            {roadmaps.map((roadmap: RoadmapType, counter: number) => (
-              <HomeRoadmapItem
-                isUpcoming={roadmap.isUpcoming}
-                url={`/${roadmap.id}`}
-                key={roadmap.id}
-                colorIndex={counter}
-                title={roadmap.featuredTitle}
-                isCommunity={roadmap.isCommunity}
-                subtitle={roadmap.featuredDescription}
-              />
-            ))}
-          </SimpleGrid>
+
+          <FeaturedRoadmapsList
+            roadmaps={roadmaps.filter(roadmap => roadmap.type === 'role')}
+            title={'Role Based' }
+          />
+
+          <FeaturedRoadmapsList
+            roadmaps={roadmaps.filter(roadmap => roadmap.type === 'tool')}
+            title={'Skill Based' }
+          />
         </Container>
       </Box>
 
@@ -110,7 +77,7 @@ export default function Home(props: HomeProps) {
                 target={'_blank'}
                 key={video.id}
                 href={video.youtubeLink!}
-                badgeText={video.isPro ? 'PRO' : ''}
+                badgeText={video.isNew ? `NEW · ${(new Date(video.createdAt)).toLocaleDateString('en-us', { month: 'long'})}` : ''}
                 hideSubtitleOnMobile
                 title={video.title}
                 subtitle={video.duration}
@@ -135,7 +102,7 @@ export default function Home(props: HomeProps) {
         <Container maxW="container.md" position="relative">
           <Box pt="40px" mb="20px">
             <Heading color="green.500" fontSize="25px" mb="5px">
-              Visual Guides
+              Guides
             </Heading>
           </Box>
 
@@ -145,8 +112,8 @@ export default function Home(props: HomeProps) {
                 key={guide.id}
                 href={`/guides/${guide.id}`}
                 title={guide.title}
-                badgeText={guide.isPro ? 'PRO' : ''}
-                subtitle={guide.formattedUpdatedAt!}
+                badgeText={guide.isNew ? `NEW · ${(new Date(guide.createdAt)).toLocaleDateString('en-us', { month: 'long'})}` : ''}
+                subtitle={`${guide?.type?.charAt(0).toUpperCase()}${guide?.type?.slice(1)}`}
               />
             ))}
             <DimmedMore href={'/guides'} text="View all Guides" />
@@ -155,7 +122,6 @@ export default function Home(props: HomeProps) {
       </Box>
 
       <OpensourceBanner />
-      <UpdatesBanner />
       <Footer />
     </PageWrapper>
   );
